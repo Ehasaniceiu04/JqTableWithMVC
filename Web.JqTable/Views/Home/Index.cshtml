@@ -32,19 +32,19 @@
     $(document).ready(function () {
         
     $('#example').DataTable( {
-        "processing": true,
         "serverSide": true,
         "ajax": {
             "url": "@Url.Action("Get", "Home")",
         "type": "POST"
-    },
+        },
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "columns": [
-            { "data": "FirstName" },
-            { "data": "LastName" },
-            { "data": "Position" },
-            { "data": "Office" },
-            { "data": "StartDate" },
-            { "data": "Salary" }
+            { "data": "FirstName", "autoWidth":true,"orderable":false },
+            { "data": "LastName", "autoWidth": true, "orderable": true },
+            { "data": "Position", "autoWidth": true, "orderable": true },
+            { "data": "Office", "autoWidth": true, "orderable": true },
+            { "data": "StartDate", "autoWidth": true, "orderable": true },
+            { "data": "Salary", "autoWidth": true, "orderable": true }
         ]
     } );
 });
