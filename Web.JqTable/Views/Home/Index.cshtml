@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<table id="example" class="display" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Position</th>
+            <th>Office</th>
+            <th>Start date</th>
+            <th>Salary</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Position</th>
+            <th>Office</th>
+            <th>Start date</th>
+            <th>Salary</th>
+        </tr>
+    </tfoot>
+</table>
+@section MyScripts {
+<script>
+    $(document).ready(function () {
+        
+    $('#example').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "@Url.Action("Get", "Home")",
+        "type": "POST"
+    },
+        "columns": [
+            { "data": "FirstName" },
+            { "data": "LastName" },
+            { "data": "Position" },
+            { "data": "Office" },
+            { "data": "StartDate" },
+            { "data": "Salary" }
+        ]
+    } );
+});
+</script>
+    }
