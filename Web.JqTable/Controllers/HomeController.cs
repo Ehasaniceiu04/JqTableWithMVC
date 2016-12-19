@@ -16,6 +16,17 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public JsonResult Get()
         {
+            var draw = Request.Form.GetValues("draw").FirstOrDefault();
+            var start = Request.Form.GetValues("start").FirstOrDefault();
+            var length = Request.Form.GetValues("length").FirstOrDefault();
+            //Find Order Column
+            var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+            var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+
+
+            int pageSize = length != null ? Convert.ToInt32(length) : 0;
+            int skip = start != null ? Convert.ToInt32(start) : 0;
+            int recordsTotal = 0;
             var list = new List<Employee> {
               new Employee { FirstName="Ehasanul", LastName="Hoque", Office="Orion Informatics Ltd", Position="Senior Software Engineer", StartDate="5 Mar 2014", Salary="5 Mar 2016"},
               new Employee { FirstName="KH", LastName="Al Mukid", Office="Orion Informatics Ltd", Position="Senior Software Engineer", StartDate="5 Mar 2014", Salary="5 Mar 2016"},
@@ -35,7 +46,9 @@ namespace WebApplication1.Controllers
             new Employee { FirstName="Ehasanul", LastName="Hoque", Office="Orion Informatics Ltd", Position="Senior Software Engineer", StartDate="5 Mar 2014", Salary="5 Mar 2016"},                                                                                                                            new Employee { FirstName="Ehasanul", LastName="Hoque", Office="Orion Informatics Ltd", Position="Senior Software Engineer", StartDate="5 Mar 2014", Salary="5 Mar 2016"},
             new Employee { FirstName="Ehasanul", LastName="Hoque", Office="Orion Informatics Ltd", Position="Senior Software Engineer", StartDate="5 Mar 2014", Salary="5 Mar 2016"},
             };
-            var dataTable = new DataTable { data = list,draw="1", recordsTotal=list.Count().ToString(),recordsFiltered=list.Count.ToString() };
+            recordsTotal = list.Count();
+            var data = list.Skip(skip).Take(pageSize).ToList();
+            var dataTable = new DataTable { data = data, draw= draw, recordsTotal= recordsTotal, recordsFiltered= recordsTotal };
           
             return Json(dataTable);
         }
@@ -58,8 +71,8 @@ namespace WebApplication1.Controllers
     public class DataTable
     {
         public string draw { get; set; }
-        public string recordsTotal { get; set; }
-        public string recordsFiltered { get; set; }
+        public int recordsTotal { get; set; }
+        public int recordsFiltered { get; set; }
         public List<Employee> data { get; set; }
     }
     public class Employee
